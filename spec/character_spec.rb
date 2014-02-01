@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe "Encryptor" do
-  let(:character) { Encryptor.new("Code in Ruby, live longer!") }
+describe Encryptor do
+  let(:character) { Encryptor.new(:message => "Code in Ruby, live longer!") }
 
   it "discards non a to z characters" do
     character.discard_non_a_z_charecters
@@ -23,5 +23,12 @@ describe "Encryptor" do
     character.uppercase
     character.convert_to_numbers(character.message)
     character.message.should == [3, 15, 4, 5, 9, 14, 18, 21, 2, 25, 12, 9, 22, 5, 12, 15, 14, 7, 5, 18]
+  end
+
+  it "adds message numbers to keystream" do
+    character.message = [ 3, 15, 4 ]
+    character.keystream = [ 13, 14, 5 ]
+    character.add_message_numbers_keystream_numbers
+    character.cipher_text.should == [16, 29, 9 ]
   end
 end

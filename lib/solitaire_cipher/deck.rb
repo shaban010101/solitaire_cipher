@@ -102,6 +102,6 @@ class Deck
       index += 1
       hash.merge!(index => letter)
     end
-    letter = hash[number]
+    hash[number]
   end
 end
