@@ -1,9 +1,11 @@
 class Deck
-  attr_accessor :cards
+  attr_accessor :cards, :keystream
   CARDS = (1..52)
+  LETTER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K","L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
   def initialize
     @cards = []
+    @keystream = []
   end
 
   def setup_deck
@@ -70,6 +72,36 @@ class Deck
   end
 
   def count_cut
+    
+    bottom = @cards.last
 
+    # if bottom == "A" or "B" 
+    #   bottom = 53
+    # end
+
+    till = bottom % 13
+    take = @cards.slice!(0...till)
+
+    @cards.insert(-2, take)
+    @cards.flatten!
+  end
+
+  def produce_output_card
+    top = @cards.first
+    move = top % 13
+
+    number = @cards[move]
+    letter = convert_to_letters(number)
+    @keystream << letter
+  end
+
+  def convert_to_letters(number)
+    hash = Hash.new
+
+    LETTER.each_with_index do |letter, index|
+      index += 1
+      hash.merge!(index => letter)
+    end
+    letter = hash[number]
   end
 end

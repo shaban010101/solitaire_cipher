@@ -22,8 +22,14 @@ describe Deck do
   end
 
   it "performs a count cut" do
-    deck.cards == [ 3, 9, "B", 5, 8, 7, 1, "A", 2, 4, 6 ]
+    deck.cards = [ 3, 9, "B", 5, 8, 7, 1, "A", 2, 4, 6 ]
     deck.count_cut
-    deck.cards.should == []
+    deck.cards.should == [1, "A", 2, 4, 3, 9, "B", 5, 8, 7, 6  ]
+  end
+
+  it "produces an output letter" do
+    deck.cards = [ 3, 9, "B", 5, 8, 7, 1, "A", 2, 4, 6 ]
+    deck.produce_output_card
+    deck.keystream.should == ["E"]
   end
 end
