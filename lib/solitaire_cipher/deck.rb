@@ -2,7 +2,7 @@ class Deck
   attr_accessor :cards, :keystream
   CARDS = (1..52)
   LETTER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K","L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-
+  
   def initialize
     @cards = []
     @keystream = []
@@ -72,12 +72,7 @@ class Deck
   end
 
   def count_cut
-    
-    bottom = @cards.last
-
-    # if bottom == "A" or "B" 
-    #   bottom = 53
-    # end
+    bottom = /(A|B)/ =~ @cards.last.to_s ? 53 : @cards.last
 
     till = bottom % 13
     take = @cards.slice!(0...till)
@@ -88,7 +83,7 @@ class Deck
 
   def produce_output_card
     top = @cards.first
-    move = top % 13
+    move = top % 26
 
     number = @cards[move]
     letter = convert_to_letters(number)
