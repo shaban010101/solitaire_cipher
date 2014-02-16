@@ -1,7 +1,9 @@
+require_relative "conversion"
+
 class Deck
+  include Conversion
   attr_accessor :cards, :keystream
   CARDS = (1..52)
-  LETTER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K","L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
   
   def initialize
     @cards = []
@@ -54,6 +56,27 @@ class Deck
     @cards.flatten!
   end
 
+  def count_cut
+    bottom = @cards.last.is_a?(String) ? 53 : @cards.last
+
+    till = bottom % 13
+    take = @cards.slice!(0...till)
+
+    @cards.insert(-2, take)
+    @cards.flatten!
+  end
+
+  def produce_output_cards(plaintext)
+    plaintext.size.times do
+      move = @cards.first % 26
+      number = @cards[move]
+      letter = convert_to_letters(number)
+      @keystream << letter
+    end
+  end
+
+private
+
   def workout_index_for_jokers
     index = []
 
@@ -69,34 +92,5 @@ class Deck
     else
       to...element
     end
-  end
-
-  def count_cut
-    bottom = /(A|B)/ =~ @cards.last.to_s ? 53 : @cards.last
-
-    till = bottom % 13
-    take = @cards.slice!(0...till)
-
-    @cards.insert(-2, take)
-    @cards.flatten!
-  end
-
-  def produce_output_card
-    top = @cards.first
-    move = top % 26
-
-    number = @cards[move]
-    letter = convert_to_letters(number)
-    @keystream << letter
-  end
-
-  def convert_to_letters(number)
-    hash = Hash.new
-
-    LETTER.each_with_index do |letter, index|
-      index += 1
-      hash.merge!(index => letter)
-    end
-    hash[number]
   end
 end

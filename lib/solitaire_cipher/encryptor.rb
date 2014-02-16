@@ -1,6 +1,8 @@
+require_relative "conversion"
+
 class Encryptor
-  attr_accessor :message, :keystream, :cipher_text
-  LETTER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K","L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+  include Conversion
+  attr_accessor :plaintext, :keystream, :cipher_text
 
   def initialize(attributes = {}) 
     attributes.each do |k, v|
@@ -9,31 +11,44 @@ class Encryptor
   end
 
   def discard_non_a_z_charecters
-   @message.gsub!(/\W+/,'')
+   @plaintext.gsub!(/\W+/,'')
   end
 
   def uppercase
-   @message.upcase!
+   @plaintext.upcase!
   end
 
-  def convert_to_numbers(message)
-    hash = Hash.new
+  def split_into_groups
+    str = @plaintext
+    str = str % 5 
+    str
+  end
+
+  def convert_plaintext_to_numbers(plaintext)
     msg = []
-
-    LETTER.each_with_index do |letter, index|
-      index += 1
-      hash.merge!(letter => index)
+    plaintext.each_char do |letter|
+      msg << convert_to_numbers("#{letter}")
     end
-
-    message.each_char do |letter|
-      msg << hash["#{letter}"]
-    end
-
-    @message = msg
+    
+    @plaintext = msg
   end
 
-  def add_message_numbers_keystream_numbers
-    cipher = message.zip(keystream).map { |element| element.inject(&:+) }
-    @cipher_text = cipher
+  def add_plaintext_numbers_keystream_numbers(keystream)
+    results = []
+    converted_keystream =  []
+
+    keystream.each do |key| 
+      character = convert_to_numbers("#{key}")
+      converted_keystream <<  character
+    end
+
+    converted_keystream.compact!
+
+    plaintext.zip(converted_keystream).each do |element|
+     result = element.inject(:+)
+     results << result
+    end
+
+    @cipher_text = results
   end
 end
