@@ -14,9 +14,17 @@ describe Encryptor do
     encrypter.plaintext.should == "CODE IN RUBY, LIVE LONGER!"
   end
 
-  xit "splits the plaintext into groups of 5" do
-    encrypter.split_plaintext
-    encrypter.plaintext.should == ["Codei","nRuby","live,","longe","r!XXX"]
+  it "splits the plaintext into groups of 5" do
+    encrypter.discard_non_a_z_charecters
+    encrypter.split_into_groups
+    encrypter.plaintext.should == ["Codei","nRuby","livel","onger"]
+  end
+
+  it "adds X for groups which have no empy chars" do
+    encrypter.discard_non_a_z_charecters
+    encrypter.plaintext = "Codei yogi"
+    encrypter.split_into_groups
+    encrypter.plaintext.should == ["Codei","yogiX"]
   end
 
   it "converts letter into numbers" do

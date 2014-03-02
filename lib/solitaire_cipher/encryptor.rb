@@ -19,9 +19,20 @@ class Encryptor
   end
 
   def split_into_groups
-    str = @plaintext
-    str = str % 5 
-    str
+    string = @plaintext
+    count = string.split(//).count % 5
+    remainder = 5 - count
+    string = string.scan(/.{1,5}/)
+
+    if count > 0 
+      last_element = string.slice(-1)
+      string.delete_at(-1)
+      padding = "X" * remainder 
+      last_element = last_element + padding
+      string << last_element
+    end
+    
+    @plaintext = string
   end
 
   def convert_plaintext_to_numbers(plaintext)
@@ -34,7 +45,7 @@ class Encryptor
   end
 
   def add_plaintext_numbers_keystream_numbers(keystream)
-    results = []
+    sum = []
     converted_keystream =  []
 
     keystream.each do |key| 
@@ -42,13 +53,10 @@ class Encryptor
       converted_keystream <<  character
     end
 
-    converted_keystream.compact!
-
     plaintext.zip(converted_keystream).each do |element|
-     result = element.inject(:+)
-     results << result
+      sum << element.inject(:+)
     end
 
-    @cipher_text = results
+    @cipher_text = sum
   end
 end
