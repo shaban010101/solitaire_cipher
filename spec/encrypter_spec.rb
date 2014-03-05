@@ -36,9 +36,13 @@ describe Encryptor do
 
   it "adds plaintext numbers to keystream" do
     encrypter.plaintext = [ 3, 15, 4 ]
-    encrypter.keystream = [ 13, 14, 5 ]
+    encrypter.keystream = [ "M", "N", "E" ]
     encrypter.add_plaintext_numbers_keystream_numbers(encrypter.keystream)
     encrypter.cipher_text.should == [16, 29, 9 ]
+  end
+
+  it "removes the nils from the array" do
+    encrypter.remove_nils([1, nil]).should == [1, 0]
   end
 
   it "encrypts a plaintext" do

@@ -24,13 +24,13 @@ class Encryptor
     remainder = 5 - count
     string = string.scan(/.{1,5}/)
 
-    if count > 0 
+    # if count > 0 
       last_element = string.slice(-1)
       string.delete_at(-1)
       padding = "X" * remainder 
       last_element = last_element + padding
       string << last_element
-    end
+    # end
     
     @plaintext = string
   end
@@ -44,6 +44,12 @@ class Encryptor
     @plaintext = msg
   end
 
+  def remove_nils(elements)
+    elements.collect do |element|
+      element.nil? ? 0 : element 
+    end
+  end
+
   def add_plaintext_numbers_keystream_numbers(keystream)
     sum = []
     converted_keystream =  []
@@ -54,6 +60,7 @@ class Encryptor
     end
 
     plaintext.zip(converted_keystream).each do |element|
+      element = remove_nils(element)
       sum << element.inject(:+)
     end
 
