@@ -24,13 +24,13 @@ class Encryptor
     remainder = 5 - count
     string = string.scan(/.{1,5}/)
 
-    # if count > 0 
-    #   last_element = string.slice(-1)
-    #   string.delete_at(-1)
-    #   padding = "X" * remainder 
-    #   last_element = last_element + padding
-    #   string << last_element
-    # end
+    if count > 0 
+      last_element = string.slice(-1)
+      string.delete_at(-1)
+      padding = "X" * remainder 
+      last_element = last_element + padding
+      string << last_element
+    end
     
     @plaintext = string
   end

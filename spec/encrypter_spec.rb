@@ -22,7 +22,7 @@ describe Encryptor do
 
   it "adds X for groups which have no empy chars" do
     encrypter.discard_non_a_z_charecters
-    encrypter.plaintext = "Codei yogi"
+    encrypter.plaintext = "Codeiyogi"
     encrypter.split_into_groups
     encrypter.plaintext.should == ["Codei","yogiX"]
   end
