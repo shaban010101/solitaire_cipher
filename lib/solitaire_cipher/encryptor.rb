@@ -55,10 +55,17 @@ class Encryptor
 
     plaintext.zip(converted_keystream).each do |element|
       element = remove_nils(element)
-      sum << element.inject(:+)
+      sum << element.inject(:+)  % 26
     end
 
     @cipher_text = sum
+  end
+
+  def convert_numbers_to_cipher_text
+    cipher = @cipher_text.collect do |character|
+       convert_to_letters(character)
+    end
+     @cipher_text = cipher
   end
 
 private 

@@ -38,7 +38,13 @@ describe Encryptor do
     encrypter.plaintext = [ 3, 15, 4 ]
     encrypter.keystream = [ "M", "N", "E" ]
     encrypter.add_plaintext_numbers_keystream_numbers(encrypter.keystream)
-    encrypter.cipher_text.should == [16, 29, 9 ]
+    encrypter.cipher_text.should == [16, 3, 9 ]
+  end
+
+  it "convert numbers to cipher text" do
+    encrypter.cipher_text = [1, 2, 3]
+    encrypter.convert_numbers_to_cipher_text
+    encrypter.cipher_text.should == ["A","B", "C"]
   end
 
   it "encrypts a plaintext" do
@@ -53,7 +59,7 @@ describe Encryptor do
     deck.produce_output_cards(encrypter.plaintext)
     encrypter.keystream = deck.keystream
     encrypter.add_plaintext_numbers_keystream_numbers(encrypter.keystream)
-    # encrypter.to_letters
-    # encrypter.cipher_text
+    encrypter.convert_numbers_to_cipher_text
+    encrypter.cipher_text.should == ["E", "Q", "F", "G", "K", "P", "T", "W", "D", "A", "N", "K", "X", "G", "N", "Q", "P", "I", "G", "T"]
   end
 end
