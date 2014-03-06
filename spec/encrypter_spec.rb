@@ -41,10 +41,6 @@ describe Encryptor do
     encrypter.cipher_text.should == [16, 29, 9 ]
   end
 
-  it "removes the nils from the array" do
-    encrypter.remove_nils([1, nil]).should == [1, 0]
-  end
-
   it "encrypts a plaintext" do
     encrypter.discard_non_a_z_charecters
     encrypter.uppercase
